@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     
     # Your excellent Pydantic V2 implementation
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env",extra="ignore")
 
 # Instantiate it (Capital S for class, lowercase s for object)
 settings = Settings()
