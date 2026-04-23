@@ -8,7 +8,7 @@ class URL(Base):
     __tablename__="urls"
 
     id:Mapped[int]=mapped_column(Integer,index=True,primary_key=True)
-    original_link:Mapped[str]=mapped_column(String,nullable=False)
+    original_url:Mapped[str]=mapped_column(String,nullable=False)
     short_code:Mapped[str]=mapped_column(String,nullable=False,unique=True,index=True)
     clicks:Mapped[int]=mapped_column(Integer,default=0)
     is_active:Mapped[bool]=mapped_column(Boolean,default=True)
