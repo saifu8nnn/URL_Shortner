@@ -23,7 +23,7 @@ from app.core.config import settings
 from app.models import Base
 
 # Tell Alembic to use the database URL from our .env file!
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", str(settings.DATABASE_URL))
 
 # Tell Alembic to look at our modern SQLAlchemy Base to find our tables!
 target_metadata = Base.metadata
