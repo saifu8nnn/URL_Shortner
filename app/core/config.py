@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Pro URL Shortener"
     ENVIRONMENT: str = "development"
 
-    DATABASE_URL: PostgresDsn
+    DATABASE_URL: str
     
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
