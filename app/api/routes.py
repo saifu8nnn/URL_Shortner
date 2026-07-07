@@ -25,8 +25,7 @@ def _generate_short_code() -> str:
 
 
 def _build_short_url(short_code: str) -> str:
-    return f"{settings.BASE_URL}/{short_code}"
-
+    return f"{settings.BASE_URL}/api/v1/r/{short_code}"
 
 @router.post(
     "/shorten",
