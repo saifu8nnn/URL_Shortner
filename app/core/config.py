@@ -12,6 +12,11 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
 
     DATABASE_URL: PostgresDsn
+    
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    
     BASE_URL: str = "http://localhost:8000"
 
     SHORT_CODE_LENGTH: int = 6
@@ -19,7 +24,7 @@ class Settings(BaseSettings):
 
     LOG_LEVEL: str = "INFO"
 
-    model_config = SettingsConfigDict(env_file=".env", extra="forbid")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @field_validator("ENVIRONMENT")
     @classmethod

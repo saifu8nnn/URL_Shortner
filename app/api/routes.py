@@ -95,8 +95,6 @@ def redirect_to_url(short_code: str, db: Session = Depends(get_db)):
         url=destination_url, 
         status_code=status.HTTP_302_FOUND
     )
-    
-####################
 
 
 @router.get(
