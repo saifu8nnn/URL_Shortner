@@ -118,17 +118,20 @@ shared engine; `get_db()` closes sessions in `finally` and rolls back on
 exceptions; all route handlers are synchronous and run in Uvicorn's threadpool
 (default ~40 threads).
 
-`scripts/monitor_pool.py` sampled `pg_stat_activity` and `docker stats` every
-2 s during the run (`pool_monitor.csv`, 47 samples):
+`scripts/monitor_pool.py` sampled `pg_stat_activity` and `docker stats` with a
+2 s sleep between samples during the run (`pool_monitor.csv`, 39 samples over
+16:58:45–17:01:37 UTC). Each `docker compose exec`/`docker stats` call has
+overhead, so the effective spacing is ~4 s. Post-run idle samples are excluded
+from the committed file.
 
-- PostgreSQL sessions: 6 → **32** (avg 25.7); the count includes the monitor's
+- PostgreSQL sessions: 6 → **32** (avg 28.7); the count includes the monitor's
   own psql session and possible transient healthcheck connections, and 32 is
   at/above the API's 30-connection ceiling.
 - Active sessions peaked at **24**; sessions waiting on a heavyweight lock
-  peaked at **23** (avg 14.0).
-- API container CPU: avg **100 %**, peak **135 %**; PostgreSQL CPU: avg 33 %,
-  peak 60 %.
-- API memory 60.8 → 73.4 MiB; PostgreSQL 45.6 → 91.1 MiB.
+  peaked at **23** (avg 16.9).
+- API container CPU: avg **120.6 %**, peak **134.7 %**; PostgreSQL CPU: avg
+  39.9 %, peak 59.6 %.
+- API memory 60.8 → 73.8 MiB; PostgreSQL 45.6 → 54.9 MiB.
 
 The pool reached its ceiling, but **pool checkout contention is not confirmed**:
 there were no `QueuePool` timeout errors and no 5xx. Checkout wait time was not
