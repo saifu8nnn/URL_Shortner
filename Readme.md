@@ -102,3 +102,26 @@ curl -X POST http://localhost:8000/api/v1/shorten \
 # Get analytics
 curl http://localhost:8000/api/v1/analytics/aB3xYz
 ```
+
+## Performance Benchmark
+
+The repository includes a reproducible Locust benchmark that stops after exactly
+15,000 HTTP request attempts (it does not rely on `--run-time`). The workload is
+the same as `locustfile.py`: `GET /api/v1/r/enqLbP` (weight 2, expects 302) and
+`GET /health` (weight 1, expects 200), with a 1-3 s wait time.
+
+```bash
+docker compose up -d --build
+python -m locust -f locustfile_15000.py --headless \
+  --host http://127.0.0.1:8000 --users 300 --spawn-rate 30 \
+  --csv reports/urlshortener_15000 --csv-full-history \
+  --html reports/urlshortener_15000.html --stop-timeout 60
+```
+
+Use `scripts/monitor_pool.py` in a separate process to sample PostgreSQL
+connections and container CPU/memory while the test runs. Distributed worker
+mode is not supported by the exact-request counter.
+
+The latest results, including the aggregate statistics, connection-pool
+observations and reproduction steps, are in
+[`reports/2026-11-12/README.md`](reports/2026-11-12/README.md).
